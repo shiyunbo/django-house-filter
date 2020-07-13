@@ -1,0 +1,297 @@
+{% extends 'house/base.html' %}
+{% load static %}
+{% load core_tags_filters %}
+
+
+{% block content %}
+<div class="py-4 px-3 bg-light">
+     <div class="container">
+
+	          <!-- Nav tabs 3 -->
+			 <div class="row">
+				<div class="col-1 col-md-2"></div>
+				<div class="col-10 col-md-8">
+
+				<ul class="nav nav-tabs px-1 mx-0" id="myTab" role="tablist">
+					<li class="nav-item">
+							<a class="nav-link active" id="home-tab" data-toggle="tab" href="#tabpanel1" role="tab" aria-controls="home" aria-selected="true">二手房</a>
+					</li>
+				    <li class="nav-item">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#tabpanel2" role="tab" aria-controls="profile" aria-selected="false">新房</a>
+				    </li>
+					<li class="nav-item">
+							<a class="nav-link" id="messages-tab" data-toggle="tab" href="#tabpanel3" role="tab" aria-controls="messages" aria-selected="false">租房</a>
+					</li>
+				</ul>
+				</div>
+				<div class="col-1 col-md-8"></div>
+				</div>
+
+
+				<div class="tab-content">
+
+				<div class="tab-pane fade show active" id="tabpanel1" role="tabpanel" aria-labelledby="home-tab">
+
+					 <div class="row pt-3">
+						<div class="col-1 col-md-2"></div>
+						<div class="col-10 col-md-8">
+					 <form role="form" method="get" action="{% url 'house:house_filter' %}">
+						<div class="input-group">
+
+							<input type="text" name="q" value="{% if filter.form.q.value %}{{ filter.form.q.value }}{% endif %}" class="form-control" id="id_q" placeholder="关键词或小区名">
+
+							<div class="input-group-append">
+									<button type="submit" class="btn btn-inline btn-sm bg-warning">
+									<svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+									  <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+									  <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+									</svg>
+									</button>
+							 </div>
+
+						</div>
+					</form>
+
+					</div>
+					<div class="col-1 col-md-2"></div>
+					</div>
+
+		      </div>
+
+			  <div class="tab-pane fade" id="tabpanel2" role="tabpanel" aria-labelledby="profile-tab">
+
+		     </div>
+			  <div class="tab-pane fade" id="tabpanel3" role="tabpanel" aria-labelledby="messages-tab">
+
+			  </div>
+
+			</div>
+	  </div>
+</div>
+
+	 <div class="py-4 px-3 bg-white">
+     <div class="container">
+         <table class="mb-4" style="font-size:14px">
+	   <tbody>
+
+
+         {% with field=filter.form.city %}
+        <!-- checkbox -->
+         <tr class="mt-2">
+             <td class="align-text-top" style="width:40px;"><span><b>城市</b></span></td>
+             <td class="tb-filter-item">
+                  <a href="?{% param_replace city='' %}">
+                    <input type="checkbox"
+                     {% if not request.GET.city %}
+                          checked="checked"
+                           {% endif %}
+                     disabled />
+                    <span>全部</span>
+                  </a>
+
+            {% for pk, choice in field.field.widget.choices %}
+                 {% ifnotequal forloop.counter0 0 %}
+                      <a href="?{% param_replace city=pk %}" class="align-items-center">
+                    <input id="id_{{field.name}}_{{ forloop.counter0 }}" name="{{field.name}}"
+                           type="checkbox" value="{{pk}}" class=""
+                             {% ifequal field.value pk %}
+                               checked="checked"
+                             {% endifequal %} disabled />
+                    <span>{{ choice }}</span>
+                        </a>
+                 {% endifnotequal %}
+            {% endfor %}
+            </td>
+         </tr>
+
+         {% endwith %}
+
+
+
+         {% with field=filter.form.bedroom %}
+        <!-- checkbox -->
+         <tr>
+             <td class="align-text-top" style="width:40px;"><span><b>{{ field.label }}</b></span></td>
+             <td class="tb-filter-item">
+                  <a href="?{% param_replace bedroom='' %}">
+                    <input type="checkbox"
+                     {% if not request.GET.bedroom %}
+                          checked="checked"
+                           {% endif %}
+                     disabled />
+                    <span>全部</span>
+                  </a>
+
+            {% for pk, choice in field.field.widget.choices %}
+                 {% ifnotequal forloop.counter0 0 %}
+                      <a href="?{% param_replace bedroom=pk %}" class="align-items-center">
+                    <input id="id_{{field.name}}_{{ forloop.counter0 }}" name="{{field.name}}"
+                           type="checkbox" value="{{pk}}" class=""
+                             {% ifequal field.value pk %}
+                               checked="checked"
+                             {% endifequal %} disabled />
+                    <span>{{ choice }}</span>
+                        </a>
+                 {% endifnotequal %}
+            {% endfor %}
+            </td>
+         </tr>
+
+         {% endwith %}
+
+         {% with field=filter.form.area %}
+        <!-- checkbox -->
+         <tr class="mt-2">
+             <td class="align-text-top" style="width:40px;"><span><b>{{ field.label }}</b></span></td>
+             <td class="tb-filter-item">
+                  <a href="?{% param_replace area='' %}">
+                    <input type="checkbox"
+                     {% if not request.GET.area %}
+                          checked="checked"
+                           {% endif %}
+                     disabled />
+                    <span>全部</span>
+                  </a>
+
+            {% for pk, choice in field.field.widget.choices %}
+                 {% ifnotequal forloop.counter0 0 %}
+                      <a href="?{% param_replace area=pk %}" class="align-items-center">
+                    <input id="id_{{field.name}}_{{ forloop.counter0 }}" name="{{field.name}}"
+                           type="checkbox" value="{{pk}}" class=""
+                             {% ifequal field.value pk %}
+                               checked="checked"
+                             {% endifequal %} disabled />
+                    <span>{{ choice }}</span>
+                        </a>
+                 {% endifnotequal %}
+            {% endfor %}
+            </td>
+         </tr>
+
+         {% endwith %}
+
+
+         {% with field=filter.form.direction %}
+        <!-- checkbox -->
+        <tr class="mt-2">
+             <td class="align-text-top" style="width:40px;"><span><b>{{ field.label }}</b></span></td>
+             <td class="tb-filter-item">
+                  <a href="?{% param_replace direction='' %}">
+                    <input type="checkbox"
+                     {% if not request.GET.direction %}
+                          checked="checked"
+                           {% endif %}
+                     disabled />
+                    <span>全部</span>
+                  </a>
+
+            {% for pk, choice in field.field.widget.choices %}
+                 {% ifnotequal forloop.counter0 0 %}
+                      <a href="?{% param_replace direction=pk %}" class="align-items-center">
+                    <input id="id_{{field.name}}_{{ forloop.counter0 }}" name="{{field.name}}"
+                           type="checkbox" value="{{pk}}" class=""
+                             {% ifequal field.value pk %}
+                               checked="checked"
+                             {% endifequal %} disabled />
+                    <span>{{ choice }}</span>
+                        </a>
+                 {% endifnotequal %}
+            {% endfor %}
+            </td>
+         </tr>
+
+         {% endwith %}
+
+
+	 </tbody>
+	 </table>
+
+         <div class="x_title align-items-center py-1 row bg-white">
+             <div class="col-6 pt-2">
+                 <h6 class="align-items-center">共找到{{ filter.qs.count }}间好房<h6>
+             </div>
+
+             <div class="col-6">
+                 <span class="dropdown float-right">
+                    <a href="{{ request.path }}">
+                     <button type="button" class="btn btn-sm btn-light py-1 my-0" aria-expanded="false">
+
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-backspace-reverse" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M9.08 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7.08a1 1 0 0 0 .76-.35L14.682 8 9.839 2.35A1 1 0 0 0 9.08 2zM2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7.08a2 2 0 0 0 1.519-.698l4.843-5.651a1 1 0 0 0 0-1.302L10.6 1.7A2 2 0 0 0 9.08 1H2z"/>
+                      <path fill-rule="evenodd" d="M9.854 5.146a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .708 0z"/>
+                      <path fill-rule="evenodd" d="M4.146 5.146a.5.5 0 0 0 0 .708l5 5a.5.5 0 0 0 .708-.708l-5-5a.5.5 0 0 0-.708 0z"/>
+                    </svg>
+                         清除
+                     </button>
+                    </a>
+
+
+                 </span>
+             </div>
+
+
+         </div>
+
+
+         <div class="table-responsive">
+             <table class="table table-striped table-hover">
+                 <thead>
+                 <tr>
+                     <th scope="col">描述</th>
+                     <th scope="col">小区</th>
+                     <th scope="col">城市</th>
+                     <th scope="col">房型</th>
+                     <th scope="col">朝向</th>
+                     <th scope="col">面积</th>
+                     <th scope="col">价格(万元)</th>
+                 </tr>
+                 </thead>
+                   <tbody>
+                 {% if page_obj %}
+                     {% for item in page_obj %}
+                     <tr>
+                         <td>{{ item.description }}</td>
+                         <td>{{ item.community }}</td>
+                         <td>{{ item.community.get_city_display }}</td>
+                         <td>{{ item.get_bedroom_display }}</td>
+                         <td>{{ item.get_direction_display }}</td>
+                         <td>{{ item.area }}</td>
+                         <td>{{ item.price }}</td>
+                     </tr>
+                     {% endfor %}
+                   {% endif %}
+                 </tbody>
+             </table>
+
+             {% if is_paginated %}
+             <ul class="pagination">
+                 {% if page_obj.has_previous %}
+                 <li class="page-item"><a class="page-link" href="?{% param_replace page=page_obj.previous_page_number %}">&laquo;</a></li>
+                 {% else %}
+                 <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                 {% endif %}
+
+                 {% for i in paginator.page_range %}
+                 {% if page_obj.number == i %}
+                 <li class="page-item active"><span class="page-link"> {{ i }} <span class="sr-only">(current)</span></span></li>
+                 {% else %}
+                       <li class="page-item"><a class="page-link" href="?{% param_replace page=i %}">{{ i }}</a></li>
+                 {% endif %}
+                 {% endfor %}
+
+                 {% if page_obj.has_next %}
+                 <li class="page-item"><a class="page-link" href="?{% param_replace page=page_obj.next_page_number %}">&raquo;</a></li>
+                 {% else %}
+                 <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                 {% endif %}
+             </ul>
+        {% endif %}
+
+         </div>
+	</div>
+</div>
+{% endblock %}
+
+
+
+
